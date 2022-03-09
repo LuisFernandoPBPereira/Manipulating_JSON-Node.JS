@@ -1,6 +1,6 @@
 //==============================================IMPORTAÇÕES=========================================================
 
-import {promises as fs, writeFile, readFile, appendFile, mkdir, readFileSync} from "fs"
+import {promises as fs, writeFile, readFile, appendFile, mkdir, readFileSync, existsSync} from "fs"
 
 //=====================================================================================================================
 
@@ -27,27 +27,33 @@ function ListingStatesWithCities(){
                     const dadosConvertidosCid = JSON.parse(dataCID)
 
                     //Criando um diretório com o mkdir
-                    mkdir("./Estados", (error) => {if (error) throw error})
-                        //usando o .map no JSON dos Estados armazenados
-                        dadosConvertidosUF.map((estado) =>{
-                        
-                        //filtrando o JSON das Cidades e comparando com o ID do Estado
-                        //para cada um
-                        const cidDoEstado = dadosConvertidosCid.filter((cidade) => 
-                        cidade.Estado == estado.ID)
-                        
-                        //Constante teste
-                        const nomesDasCid = cidDoEstado.map((cidade) => cidade.Nome)
-                        
-                        //Criando um writeFile para criar cada arquivo JSON para determinado Estado
-                        writeFile(`./Estados/${estado.Sigla}.json`, JSON.stringify(cidDoEstado),(err) => {
-                            if (err){
-                                console.log(`Erro ao criar: ${estado.Sigla}.json`);
-                            } else {
-                                console.log(`${estado.Sigla}.json criado com sucesso!`);
-                            }
-                        });
-                    })        
+                    if(existsSync("./Estados")){
+                        console.log("A pasta já existe!")
+                    }
+                    else{
+                        mkdir("./Estados", (error) => {if (error) throw error})
+                            //usando o .map no JSON dos Estados armazenados
+                            dadosConvertidosUF.map((estado) =>{
+                            
+                            //filtrando o JSON das Cidades e comparando com o ID do Estado
+                            //para cada um
+                            const cidDoEstado = dadosConvertidosCid.filter((cidade) => 
+                            cidade.Estado == estado.ID)
+                            
+                            //Constante teste
+                            const nomesDasCid = cidDoEstado.map((cidade) => cidade.Nome)
+                            
+                            //Criando um writeFile para criar cada arquivo JSON para determinado Estado
+                            writeFile(`./Estados/${estado.Sigla}.json`, JSON.stringify(cidDoEstado, null, 2),(err) => {
+                                if (err){
+                                    console.log(`Erro ao criar: ${estado.Sigla}.json`);
+                                } else {
+                                    console.log(`${estado.Sigla}.json criado com sucesso!`);
+                                }
+                            });
+                            
+                        })        
+                    }
                 }
             })
         }
