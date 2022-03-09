@@ -84,10 +84,10 @@ function PopulationValueDescending(){
         //Atribuindo o JSON em uma variável
         states = JSON.parse(states)
         //Usando .map para retornar a sigla e a cidade
-        const estadoComCidade = states.map((state, index, err) =>{
+        const estadoComCidade = states.map((state, err) =>{
             return {
                 sigla: state.Sigla,
-                city: number_of_cities(`${index}`)
+                city: number_of_cities(state.ID)
 
             }
         })
@@ -110,10 +110,10 @@ function PopulationValueAscending(){
         //Atribuindo o JSON em uma variável
         states = JSON.parse(states)
         //Usando .map para retornar a sigla e a cidade
-        const estadoComCidade = states.map((state, index, err) =>{
+        const estadoComCidade = states.map((state, err) =>{
             return {
                 sigla: state.Sigla,
-                city: number_of_cities(`${index}`)
+                city: number_of_cities(state.ID)
 
             }
         })
